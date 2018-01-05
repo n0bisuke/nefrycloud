@@ -1,0 +1,61 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Nefry BT LED制御するやつ</title>
+    </head>
+
+    <body>
+        <h1>Nefry BT LED制御するやつ</h1>
+        
+        <div>
+            User: <input type="text" id="user" />
+        </div>
+
+        <div>
+            API Key: <input type="text" id="apikey" />
+        </div>
+
+        <div>
+            LED Color: 
+            <input type="button" class="red" value="red" />
+            <input type="button" class="green" value="green" />
+            <input type="button" class="blue" value="blue" />
+        </div>
+
+        <a href="http://cloud.nefry.studio:1880/nefrysetting/" target="_blank">API Keyの取得</a>
+
+        <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+        <script>
+            'use strict';
+
+            const $buttons = document.querySelectorAll('input[type=button]');
+            const BASE_URL = `http://cloud.nefry.studio:1880/nefrysetting/setdata`;
+
+            const ncPost = (ref) => {
+                const USER = document.querySelector('#user').value;
+                const APIKEY = document.querySelector('#apikey').value;
+                const COLOR = ref.toElement.value;
+                const API_ENDPOINT = `${BASE_URL}?user=${USER}&key=${APIKEY}&data=${COLOR}`
+
+                axios.post(BASE_URL,{
+                    user: USER,
+                    key: APIKEY,
+                    data: COLOR
+                })
+                .then(response => console.log(response))
+                .catch(error => console.log(error));
+
+                //GETの場合
+                // axios.get(API_ENDPOINT)
+                // .then(response => console.log(response))
+                // .catch(error => console.log(error));
+            }
+
+            $buttons[0].addEventListener('click', ncPost);
+            $buttons[1].addEventListener('click', ncPost);
+            $buttons[2].addEventListener('click', ncPost);
+            
+        </script>
+
+    </body>
+</html>
